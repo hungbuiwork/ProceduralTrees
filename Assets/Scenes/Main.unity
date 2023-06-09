@@ -5344,17 +5344,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7027d9e9414368e43a4613694f9fce8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iterationsToRun: 5
   system: {fileID: 1434434029}
   branchPrefab: {fileID: 0}
   branchLength: 20
-  iterations: 6
+  iterations: 7
   turnAngle: 30
   scaleValue: 0.9
   currPos: {x: 0, y: 0, z: 0}
   currScale: 1
   currDir: {x: 0, y: 1, z: 0}
   currTransform: {fileID: 0}
+  prevDir: {x: 0, y: 1, z: 0}
 --- !u!1 &1575658008
 GameObject:
   m_ObjectHideFlags: 0

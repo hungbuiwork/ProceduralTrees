@@ -12,20 +12,20 @@ public class LSystemState
     public Vector3 direction;
     public float scale;
     public Transform transform;
-    //[TODO: create variable to store direction]
+    public Vector3 prevDirection;
 
-    public LSystemState(Vector3 position, Vector3 direction, float scale, Transform transform)
+    public LSystemState(Vector3 position, Vector3 direction, float scale, Transform transform, Vector3 prevDirection)
     {
         this.position = position;
         this.scale = scale;
         this.transform = transform;
         this.direction = direction;
+        this.prevDirection = prevDirection;
     }
 
 }
 public class LSystemRenderer : MonoBehaviour
 {
-    [SerializeField] private int iterationsToRun;
     [SerializeField] private Stack<LSystemState> stack = new Stack<LSystemState>(); //the stack to append/pop off of
 
     //variables to store static info
@@ -41,6 +41,11 @@ public class LSystemRenderer : MonoBehaviour
     [SerializeField] private float currScale = 1;
     [SerializeField] private Vector3 currDir = Vector3.up;
     [SerializeField] private Transform currTransform; //the transform used for adding parents/children in the hierarchy
+
+    [SerializeField] private Vector3 prevDir = Vector3.up;
+
+
+
 
 
     //For Gizmos drawing
@@ -77,6 +82,7 @@ public class LSystemRenderer : MonoBehaviour
     {
         currPos = this.transform.position;
         Create(system.apply_iterations(iterations));
+        Save();
     }
 
     private void Create(string template)
@@ -129,7 +135,7 @@ public class LSystemRenderer : MonoBehaviour
     private void Save()
     {
         //COMPLETED
-        stack.Push(new LSystemState(currPos, currDir, currScale, currTransform));
+        stack.Push(new LSystemState(currPos, currDir, currScale, currTransform, prevDir));
     }
 
     private void Restore()
@@ -140,6 +146,7 @@ public class LSystemRenderer : MonoBehaviour
         currDir = restoredState.direction;
         currScale = restoredState.scale;
         currTransform = restoredState.transform;
+        prevDir = restoredState.prevDirection;
 
     }
     private void Draw_Branch()
@@ -147,6 +154,7 @@ public class LSystemRenderer : MonoBehaviour
         //COMPLETED(for the most part)
         //TODO: set the transforms accordingly
         //Draws a branch, sets transform's parent to the currTransform, updates currPos accordingly(by offsetting currPos by branchLength * currScale)
+        prevDir = new Vector3(currDir.x, currDir.y, currDir.z); //UNKNOWN IF THIS IS NEEDED
         Vector3 newPos = currPos + (currDir.normalized * currScale);
         gizmoLines.Add(new Line(currPos, newPos));
         gizmoPoints.Add(newPos);
@@ -170,25 +178,25 @@ public class LSystemRenderer : MonoBehaviour
 
         // + and - symbols
         //TODO: modify the angle/direction and update currAngle
-        Vector3 newDir = Quaternion.AngleAxis(value, Vector3.right) * currDir;
-        currDir = newDir;
+        Vector3 newDir = Quaternion.AngleAxis(value, Vector3.right) * currDir;//I think Vector3.right has to be replaced with some vector contingent on the previous direction(prevDir)
+        currDir = newDir.normalized;
     }
 
     private void Pitch(int value)
     {
         // &(pitch down) and ^(pitch up)
         //TODO: modify the angle/direction and update currAngle
-        Vector3 newDir = Quaternion.AngleAxis(value, Vector3.forward) * currDir;
-        currDir = newDir;
+        Vector3 newDir = Quaternion.AngleAxis(value, Vector3.forward) * currDir;//I think Vector3.forward has to be replaced with some vector contingent on the previous direction(prevDir)
+        currDir = newDir.normalized;
     }
 
     private void Roll(int value)
     {
 
-        // \(roll left) and /(roll right)
+        // \\(roll left) and /(roll right)
         //TODO: modify the angle/direction and update currAngle
-        Vector3 newDir = Quaternion.AngleAxis(value, Vector3.up) * currDir;
-        currDir = newDir;
+        Vector3 newDir = Quaternion.AngleAxis(value, Vector3.up) * currDir; //I think Vector3.up has to be replaced with some vector contingent on the previous direction(prevDir)
+        currDir = newDir.normalized;
     }
 
     private void Scale()

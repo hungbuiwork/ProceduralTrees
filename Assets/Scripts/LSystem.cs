@@ -11,13 +11,15 @@ public class Rule
     public string New;
     
 }
+
+
 public class LSystem : MonoBehaviour
 {
     ///Basic L System where you can define rules
     ///
-
-    [SerializeField] private string start;
-    [SerializeField] private List<Rule> rules = new List<Rule>();
+    [SerializeField] private LSystemTemplate template;
+    private string start;
+    private List<Rule> rules = new List<Rule>();
 
     [SerializeField] private string current;
     [SerializeField] private int currentIteration;
@@ -26,6 +28,8 @@ public class LSystem : MonoBehaviour
 
     private void Awake()
     {
+        start = template.getStart();
+        rules = template.getRules();
         current = start;
     }
 
@@ -63,10 +67,7 @@ public class LSystem : MonoBehaviour
     private string step()
     {
         saves.Add(current);
-        Debug.Log("test");
-        Debug.Log(current);
         current = apply_rules(current);
-        Debug.Log(current);
         return current;
     }
 

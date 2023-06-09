@@ -38,12 +38,12 @@ public class LSystemRenderer : MonoBehaviour
 
     //variables to store current state
     [SerializeField] private Vector3 currPos = Vector3.zero;
-    [SerializeField] private float currScale = 1;
+    [SerializeField] private float currScale = 1f;
     [SerializeField] private Vector3 currDir = Vector3.up;
     [SerializeField] private Transform currTransform; //the transform used for adding parents/children in the hierarchy
 
     [SerializeField] private Vector3 prevDir = Vector3.up;
-
+    [SerializeField] private Transform recentTransform; //recentmost transform, set as the currtransform whenever a save occurs
 
 
 
@@ -81,6 +81,7 @@ public class LSystemRenderer : MonoBehaviour
     private void Awake()
     {
         currPos = this.transform.position;
+        currTransform = this.transform;
         Create(system.apply_iterations(iterations));
         Save();
     }
@@ -122,7 +123,7 @@ public class LSystemRenderer : MonoBehaviour
                 case '?':
                     Roll(-turnAngle);
                     break;
-                case '"':
+                case 'S':
                     Scale();
                     break;
 
@@ -135,6 +136,7 @@ public class LSystemRenderer : MonoBehaviour
     private void Save()
     {
         //COMPLETED
+        currTransform = recentTransform;
         stack.Push(new LSystemState(currPos, currDir, currScale, currTransform, prevDir));
     }
 
@@ -156,6 +158,18 @@ public class LSystemRenderer : MonoBehaviour
         //Draws a branch, sets transform's parent to the currTransform, updates currPos accordingly(by offsetting currPos by branchLength * currScale)
         prevDir = new Vector3(currDir.x, currDir.y, currDir.z); //UNKNOWN IF THIS IS NEEDED
         Vector3 newPos = currPos + (currDir.normalized * currScale);
+        GameObject branch = Instantiate(branchPrefab, newPos, Quaternion.Euler(currDir.x, currDir.y, currDir.z));
+        //branch.transform.up = currDir;
+        branch.transform.up = currDir;
+        branch.transform.localScale = new Vector3(currScale * branch.transform.localScale.x, currScale * branch.transform.localScale.y, currScale * branch.transform.localScale.z);
+        branch.transform.parent = this.transform;
+        
+        /*
+        branch.transform.localScale = new Vector3(1, 1, 1);
+        branch.transform.SetParent(currTransform, true);
+        */
+        recentTransform = branch.transform;
+
         gizmoLines.Add(new Line(currPos, newPos));
         gizmoPoints.Add(newPos);
         currPos = newPos;
@@ -202,6 +216,7 @@ public class LSystemRenderer : MonoBehaviour
     private void Scale()
     {
         currScale = scaleValue * currScale;
+        Debug.Log(currScale);
     }
 
 

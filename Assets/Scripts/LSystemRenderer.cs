@@ -31,19 +31,20 @@ public class LSystemRenderer : MonoBehaviour
     //variables to store static info
     [SerializeField] private LSystem system;
     [SerializeField] private GameObject branchPrefab;
-    [SerializeField] private float branchLength = 1;
+    private float branchLength = 1;
+    private float branchThickness = 1;
     [SerializeField] private uint iterations = 5;
-    [SerializeField] private int turnAngle = 30;
-    [SerializeField] private float scaleValue = 1.0f;
+    private int turnAngle = 30;
+    private float scaleValue = 1.0f;
 
     //variables to store current state
-    [SerializeField] private Vector3 currPos = Vector3.zero;
-    [SerializeField] private float currScale = 1f;
-    [SerializeField] private Vector3 currDir = Vector3.up;
-    [SerializeField] private Transform currTransform; //the transform used for adding parents/children in the hierarchy
+    private Vector3 currPos = Vector3.zero;
+    private float currScale = 1f;
+    private Vector3 currDir = Vector3.up;
+    private Transform currTransform; //the transform used for adding parents/children in the hierarchy
 
-    [SerializeField] private Vector3 prevDir = Vector3.up;
-    [SerializeField] private Transform recentTransform; //recentmost transform, set as the currtransform whenever a save occurs
+    private Vector3 prevDir = Vector3.up;
+    private Transform recentTransform; //recentmost transform, set as the currtransform whenever a save occurs
 
 
 
@@ -82,6 +83,10 @@ public class LSystemRenderer : MonoBehaviour
     {
         currPos = this.transform.position;
         currTransform = this.transform;
+        branchLength = system.template.getBranchLength();
+        scaleValue = system.template.getScaleValue();
+        turnAngle = system.template.getAngle();
+        branchThickness = system.template.getBranchThickness();
         Create(system.apply_iterations(iterations));
         Save();
     }
@@ -157,11 +162,11 @@ public class LSystemRenderer : MonoBehaviour
         //TODO: set the transforms accordingly
         //Draws a branch, sets transform's parent to the currTransform, updates currPos accordingly(by offsetting currPos by branchLength * currScale)
         prevDir = new Vector3(currDir.x, currDir.y, currDir.z); //UNKNOWN IF THIS IS NEEDED
-        Vector3 newPos = currPos + (currDir.normalized * currScale);
+        Vector3 newPos = currPos + (currDir.normalized * currScale * branchLength);
         GameObject branch = Instantiate(branchPrefab, newPos, Quaternion.Euler(currDir.x, currDir.y, currDir.z));
         //branch.transform.up = currDir;
         branch.transform.up = currDir;
-        branch.transform.localScale = new Vector3(currScale * branch.transform.localScale.x, currScale * branch.transform.localScale.y, currScale * branch.transform.localScale.z);
+        branch.transform.localScale = new Vector3(currScale * branchThickness * branch.transform.localScale.x, currScale * branchLength * branch.transform.localScale.y, currScale * branchThickness * branch.transform.localScale.z);
         branch.transform.parent = this.transform;
         
         /*

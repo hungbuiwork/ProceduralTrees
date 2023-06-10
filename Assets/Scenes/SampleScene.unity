@@ -518,7 +518,7 @@ PrefabInstance:
     - target: {fileID: 7913313140687881117, guid: 5eb4cb6bf2f1a1b468c022d32a995d43, type: 3}
       propertyPath: template
       value: 
-      objectReference: {fileID: 11400000, guid: 412bb159dd80d7c48a9991afc53f1a07, type: 2}
+      objectReference: {fileID: 11400000, guid: 708c489730afbd248a81c746822146ff, type: 2}
     - target: {fileID: 7913313140687881117, guid: 5eb4cb6bf2f1a1b468c022d32a995d43, type: 3}
       propertyPath: rules.Array.data[0].New
       value: F[&F]F[^F]F
@@ -573,11 +573,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7913313140687881119, guid: 5eb4cb6bf2f1a1b468c022d32a995d43, type: 3}
       propertyPath: turnAngle
-      value: 25
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7913313140687881119, guid: 5eb4cb6bf2f1a1b468c022d32a995d43, type: 3}
       propertyPath: iterations
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7913313140687881119, guid: 5eb4cb6bf2f1a1b468c022d32a995d43, type: 3}
       propertyPath: scaleValue

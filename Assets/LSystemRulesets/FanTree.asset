@@ -16,3 +16,7 @@ MonoBehaviour:
   rules:
   - Old: 88
     New: SSSF[+&X][+^X]F[-^X][-&X]+X
+  branchLength: 1
+  angle: 25
+  scaleValue: 0.9
+  branchThickness: 1

@@ -16,3 +16,7 @@ MonoBehaviour:
   rules:
   - Old: 70
     New: F[+FSFSFSFS]F[-FSFSFSFS]
+  branchLength: 1
+  angle: 25
+  scaleValue: 0.9
+  branchThickness: 1

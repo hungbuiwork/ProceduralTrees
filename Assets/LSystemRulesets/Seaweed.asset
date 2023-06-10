@@ -15,4 +15,8 @@ MonoBehaviour:
   start: F
   rules:
   - Old: 70
-    New: SSF[+&F][+^F]F[-F][F]
+    New: SF[+&F][+^F]F[-F][F]
+  branchLength: 1
+  angle: 25
+  scaleValue: 0.9
+  branchThickness: 1

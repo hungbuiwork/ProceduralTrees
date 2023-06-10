@@ -17,7 +17,7 @@ public class LSystem : MonoBehaviour
 {
     ///Basic L System where you can define rules
     ///
-    [SerializeField] private LSystemTemplate template;
+    [SerializeField] public LSystemTemplate template;
     private string start;
     private List<Rule> rules = new List<Rule>();
 
@@ -32,6 +32,7 @@ public class LSystem : MonoBehaviour
         rules = template.getRules();
         current = start;
     }
+
 
     private void Update()
     {

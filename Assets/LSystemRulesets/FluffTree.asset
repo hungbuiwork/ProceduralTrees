@@ -18,3 +18,7 @@ MonoBehaviour:
     New: SSSSF[+&X][&-X][+^X][^-X]FX
   - Old: 70
     New: F
+  branchLength: 2
+  angle: 25
+  scaleValue: 0.9
+  branchThickness: 4

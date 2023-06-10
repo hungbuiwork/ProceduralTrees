@@ -1,3 +1,4 @@
+using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -31,6 +32,7 @@ public class LSystemRenderer : MonoBehaviour
     //variables to store static info
     [SerializeField] private LSystem system;
     [SerializeField] private GameObject branchPrefab;
+    [SerializeField] private GameObject leafPrefab;
     private float branchLength = 1;
     private float branchThickness = 1;
     [SerializeField] private uint iterations = 5;
@@ -45,6 +47,16 @@ public class LSystemRenderer : MonoBehaviour
 
     private Vector3 prevDir = Vector3.up;
     private Transform recentTransform; //recentmost transform, set as the currtransform whenever a save occurs
+    private int currentRecursionDepth;
+
+
+    //To store trees, and animate them
+    [SerializeField] private List<GameObject> generatedTrees = new List<GameObject>();
+    [SerializeField] private GameObject currentTree;
+    [SerializeField] private int currentActiveTree = 0;
+    [SerializeField] private float timeBetweenSwap = 0.5f;
+    [SerializeField] private float timeSinceLastSwap = 0f;
+    [SerializeField] private bool animating = false;
 
 
 
@@ -87,13 +99,43 @@ public class LSystemRenderer : MonoBehaviour
         scaleValue = system.template.getScaleValue();
         turnAngle = system.template.getAngle();
         branchThickness = system.template.getBranchThickness();
-        Create(system.apply_iterations(iterations));
+        system.apply_iterations(iterations);
+        List<string> templateIterations = system.saves;
+        foreach(string s in templateIterations)
+        {
+            Create(s);
+        }
         Save();
+        foreach(GameObject g in generatedTrees)
+        {
+            g.SetActive(false);
+        }
+        generatedTrees[0].SetActive(true);
+        animating = true;
     }
 
+    private void Update()
+    {
+        timeSinceLastSwap += Time.deltaTime;
+        if (timeSinceLastSwap > timeBetweenSwap)
+        {
+            timeSinceLastSwap = 0f;
+            NextTree();
+        }
+    }
+    private void NextTree()
+    {
+        generatedTrees[currentActiveTree].SetActive(false);
+        currentActiveTree = (currentActiveTree + 1) % generatedTrees.Count;
+        generatedTrees[currentActiveTree].SetActive(true);
+
+    }
     private void Create(string template)
     {
         //TODO: Use helper functions to create the entire thing
+        currentTree = new GameObject() { name = "Iteration " + generatedTrees.Count.ToString()};
+        generatedTrees.Add(currentTree);
+        currentTree.transform.parent = this.transform;
         foreach(char c in template)
         {
             switch (c)
@@ -134,20 +176,40 @@ public class LSystemRenderer : MonoBehaviour
 
             }
         }
+        Reset();
     }
 
+    private void Reset()
+    {
+        ///Reset between iteration creation
+        currScale = 1f;
+        currDir = Vector3.up;
+        currTransform = null;
+        recentTransform = null;
+        prevDir= Vector3.up;
+        currPos = this.transform.position;
+        currentRecursionDepth = 0;
 
+    }
 
     private void Save()
     {
         //COMPLETED
+        currentRecursionDepth += 1;
         currTransform = recentTransform;
         stack.Push(new LSystemState(currPos, currDir, currScale, currTransform, prevDir));
     }
 
     private void Restore()
     {
+        if (currentRecursionDepth > 1)
+        {
+            GameObject leaf = Instantiate(leafPrefab, currPos + 0.5f * currDir.normalized * branchLength * currScale, Quaternion.Euler(currDir.x, currDir.y, currDir.z));
+            leaf.transform.parent = currentTree.transform;
+            leaf.transform.localScale = new Vector3(currScale * branchThickness * leaf.transform.localScale.x, currScale * branchLength * leaf.transform.localScale.y, currScale * branchThickness * leaf.transform.localScale.z) * 2.0f;
+        }
         //COMPLETED
+        currentRecursionDepth -= 1;
         LSystemState restoredState = stack.Pop();
         currPos = restoredState.position;
         currDir = restoredState.direction;
@@ -167,7 +229,7 @@ public class LSystemRenderer : MonoBehaviour
         //branch.transform.up = currDir;
         branch.transform.up = currDir;
         branch.transform.localScale = new Vector3(currScale * branchThickness * branch.transform.localScale.x, currScale * branchLength * branch.transform.localScale.y, currScale * branchThickness * branch.transform.localScale.z);
-        branch.transform.parent = this.transform;
+        branch.transform.parent = currentTree.transform;
         
         /*
         branch.transform.localScale = new Vector3(1, 1, 1);
@@ -221,7 +283,6 @@ public class LSystemRenderer : MonoBehaviour
     private void Scale()
     {
         currScale = scaleValue * currScale;
-        Debug.Log(currScale);
     }
 
 

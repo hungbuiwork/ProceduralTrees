@@ -15,10 +15,10 @@ MonoBehaviour:
   start: X
   rules:
   - Old: 88
-    New: SSSSF[+&X][&-X][+^X][^-X]FX
+    New: SF[+&X][&-X][+^X][^-X]FX
   - Old: 70
-    New: F
-  branchLength: 2
+    New: FF
+  branchLength: 0.6
   angle: 25
   scaleValue: 0.9
-  branchThickness: 4
+  branchThickness: 2

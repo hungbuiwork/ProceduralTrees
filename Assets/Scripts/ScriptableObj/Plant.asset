@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae7453ee2cdc7384d8b2cc4b1ae8a281, type: 3}
-  m_Name: Building 3
+  m_Script: {fileID: 11500000, guid: 53fb828e4b761c340bddd089c5d6282a, type: 3}
+  m_Name: Plant
   m_EditorClassIdentifier: 
-  name: Something
-  prefab: {fileID: 245218895077310711, guid: 283e3819d8ee7a4429ae13797ae43ac0, type: 3}
+  name: LSystem
+  prefab: {fileID: 7913313140687881116, guid: 5eb4cb6bf2f1a1b468c022d32a995d43, type: 3}

@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "SO/Building")]
-public class BuildingSO : ScriptableObject
+[CreateAssetMenu(menuName = "SO/Plant")]
+public class PlantSO : ScriptableObject
 {
     [SerializeField] private string name;
     [SerializeField] private GameObject prefab;
@@ -12,6 +12,6 @@ public class BuildingSO : ScriptableObject
     {
         Debug.Log("Created");
         GameObject newBuilding = Instantiate(prefab, pos, Quaternion.identity);
-        newBuilding.transform.parent = BuildingSpawner.Instance.transform;
+        newBuilding.transform.parent = Spawner.Instance.transform;
     }
 }

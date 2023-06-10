@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingSpawner : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
-    [SerializeField] static public BuildingSpawner Instance;
-    [SerializeField] private List<BuildingSO> options = new List<BuildingSO>();
+    [SerializeField] static public Spawner Instance;
+    [SerializeField] private List<PlantSO> options = new List<PlantSO>();
     [SerializeField] private int currentIndex = 0;
 
     public void Create(Vector3 pos)

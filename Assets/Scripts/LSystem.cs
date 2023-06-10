@@ -23,7 +23,7 @@ public class LSystem : MonoBehaviour
 
     [SerializeField] private string current;
     [SerializeField] private int currentIteration;
-    [SerializeField] private List<string> saves;
+    public List<string> saves;
 
 
     private void Awake()
@@ -81,4 +81,5 @@ public class LSystem : MonoBehaviour
         currentIteration += (int) quantity;
         return current;
     }
+
 }

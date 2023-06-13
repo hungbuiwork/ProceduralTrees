@@ -28,9 +28,16 @@ public class LSystem : MonoBehaviour
 
     private void Awake()
     {
+        setTemplate(template);
+    }
+
+    public void setTemplate(LSystemTemplate newtemplate)
+    {
+        template = newtemplate;
         start = template.getStart();
         rules = template.getRules();
         current = start;
+
     }
 
 

@@ -12,6 +12,10 @@ public class LSystemTemplate : ScriptableObject
     [SerializeField] private int angle = 25;
     [SerializeField] private float scaleValue = 0.9f;
     [SerializeField] private float branchThickness = 1;
+
+    [SerializeField] public GameObject branchPrefab;
+    [SerializeField] public bool createLeaves;
+    [SerializeField] public GameObject leafPrefab;
     public string getStart() { return start; }
     public List<Rule> getRules() { return rules; }
 

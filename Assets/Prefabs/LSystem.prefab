@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2085580310
 Transform:
   m_ObjectHideFlags: 0
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adcfbf28fe0de8248a35d620fdf5d85c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  template: {fileID: 11400000, guid: fc76c421ee11d0b409f1cc5b2fc1ee24, type: 2}
+  template: {fileID: 11400000, guid: 708c489730afbd248a81c746822146ff, type: 2}
   current: 
   currentIteration: 0
   saves:
@@ -164,6 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   system: {fileID: 7913313140687881117}
   branchPrefab: {fileID: 2057393337354159550, guid: ad48a0720ab237448b7e87454ba445e7, type: 3}
+  createLeaves: 0
   leafPrefab: {fileID: 2057393337354159550, guid: 9a972addabb0fe849ada2141c5e1f125, type: 3}
   iterations: 5
   generatedTrees: []

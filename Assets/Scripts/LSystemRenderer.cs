@@ -32,6 +32,7 @@ public class LSystemRenderer : MonoBehaviour
     //variables to store static info
     [SerializeField] private LSystem system;
     [SerializeField] private GameObject branchPrefab;
+    [SerializeField] private bool createLeaves;
     [SerializeField] private GameObject leafPrefab;
     private float branchLength = 1;
     private float branchThickness = 1;
@@ -54,7 +55,7 @@ public class LSystemRenderer : MonoBehaviour
     [SerializeField] private List<GameObject> generatedTrees = new List<GameObject>();
     [SerializeField] private GameObject currentTree;
     [SerializeField] private int currentActiveTree = 0;
-    [SerializeField] private float timeBetweenSwap = 0.5f;
+    [SerializeField] private float timeBetweenSwap = 2f;
     [SerializeField] private float timeSinceLastSwap = 0f;
     [SerializeField] private bool animating = false;
 
@@ -83,22 +84,43 @@ public class LSystemRenderer : MonoBehaviour
      ^ = pitch up
      \\ = roll left
      / = roll right
-     | = turn 180 degree [Possibly Not Needed]
      F = draw branch (and go forward)
-     g = go forward [Possibly Not Needed]
      [ = save state
      ] = restore state
-     " = scale state (YET TO IMPLEMENT)
+     S = scale state (YET TO IMPLEMENT)
      */
 
     private void Awake()
     {
         currPos = this.transform.position;
         currTransform = this.transform;
-        branchLength = system.template.getBranchLength();
-        scaleValue = system.template.getScaleValue();
-        turnAngle = system.template.getAngle();
-        branchThickness = system.template.getBranchThickness();
+
+        if (LSystemSettings.Instance != null)
+        {
+
+            system.setTemplate(LSystemSettings.Instance.globalTemplate);
+        }
+
+        branchLength = system.template.getBranchLength();        //User should be able to change this
+        scaleValue = system.template.getScaleValue();            //User will be able to change this
+        turnAngle = system.template.getAngle();                  //User will be able to change this
+        branchThickness = system.template.getBranchThickness(); //User will be able to change this
+
+
+        branchPrefab = system.template.branchPrefab;     
+        createLeaves = system.template.createLeaves;
+        leafPrefab = system.template.leafPrefab;
+
+        if (LSystemSettings.Instance != null)
+        {
+            if (LSystemSettings.Instance.usingOverrides)
+            {
+                turnAngle = (int)LSystemSettings.Instance.globalAngle;
+                scaleValue = LSystemSettings.Instance.globalScale;
+            }
+        }
+
+
         system.apply_iterations(iterations);
         List<string> templateIterations = system.saves;
         foreach(string s in templateIterations)
@@ -112,23 +134,6 @@ public class LSystemRenderer : MonoBehaviour
         }
         generatedTrees[0].SetActive(true);
         animating = true;
-    }
-
-    private void Update()
-    {
-        timeSinceLastSwap += Time.deltaTime;
-        if (timeSinceLastSwap > timeBetweenSwap)
-        {
-            timeSinceLastSwap = 0f;
-            NextTree();
-        }
-    }
-    private void NextTree()
-    {
-        generatedTrees[currentActiveTree].SetActive(false);
-        currentActiveTree = (currentActiveTree + 1) % generatedTrees.Count;
-        generatedTrees[currentActiveTree].SetActive(true);
-
     }
     private void Create(string template)
     {
@@ -167,9 +172,6 @@ public class LSystemRenderer : MonoBehaviour
                 case '/':
                     Roll(turnAngle);
                     break;
-                case '?':
-                    Roll(-turnAngle);
-                    break;
                 case 'S':
                     Scale();
                     break;
@@ -202,11 +204,11 @@ public class LSystemRenderer : MonoBehaviour
 
     private void Restore()
     {
-        if (currentRecursionDepth > 1)
+        if (currentRecursionDepth > 1 && createLeaves)
         {
             GameObject leaf = Instantiate(leafPrefab, currPos + 0.5f * currDir.normalized * branchLength * currScale, Quaternion.Euler(currDir.x, currDir.y, currDir.z));
             leaf.transform.parent = currentTree.transform;
-            leaf.transform.localScale = new Vector3(currScale * branchThickness * leaf.transform.localScale.x, currScale * branchLength * leaf.transform.localScale.y, currScale * branchThickness * leaf.transform.localScale.z) * 2.0f;
+            leaf.transform.localScale = leaf.transform.localScale * currScale;
         }
         //COMPLETED
         currentRecursionDepth -= 1;
@@ -286,5 +288,25 @@ public class LSystemRenderer : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+        timeSinceLastSwap += Time.deltaTime;
+        if (timeSinceLastSwap > timeBetweenSwap)
+        {
+            timeSinceLastSwap = 0f;
+            NextTree();
+        }
+    }
+    private void NextTree()
+    {
+        generatedTrees[currentActiveTree].SetActive(false);
+        currentActiveTree = (currentActiveTree + 1);
+        if (currentActiveTree > generatedTrees.Count - 1)
+        {
+            currentActiveTree = generatedTrees.Count - 1;
+        }
+        generatedTrees[currentActiveTree].SetActive(true);
+
+    }
 
 }

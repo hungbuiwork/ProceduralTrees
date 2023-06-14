@@ -15,6 +15,7 @@ public class LSystemTemplate : ScriptableObject
 
     [SerializeField] public GameObject branchPrefab;
     [SerializeField] public bool createLeaves;
+    [SerializeField] public LeafType leaf;
     [SerializeField] public GameObject leafPrefab;
     public string getStart() { return start; }
     public List<Rule> getRules() { return rules; }
@@ -24,4 +25,6 @@ public class LSystemTemplate : ScriptableObject
     public float getScaleValue() { return scaleValue; }
 
     public float getBranchThickness() { return branchThickness; }
+
+    public LeafType getLeaf() { return leaf; }
 }

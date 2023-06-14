@@ -24,4 +24,5 @@ MonoBehaviour:
   branchThickness: 2
   branchPrefab: {fileID: 2057393337354159550, guid: ad48a0720ab237448b7e87454ba445e7, type: 3}
   createLeaves: 1
-  leafPrefab: {fileID: 2057393337354159550, guid: 9a972addabb0fe849ada2141c5e1f125, type: 3}
+  leaf: 3
+  leafPrefab: {fileID: 569163894875151805, guid: a6351ac6894a8534faedda0b125da08a, type: 3}

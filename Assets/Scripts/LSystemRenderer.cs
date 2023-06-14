@@ -1,4 +1,3 @@
-using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -117,6 +116,8 @@ public class LSystemRenderer : MonoBehaviour
             {
                 turnAngle = (int)LSystemSettings.Instance.globalAngle;
                 scaleValue = LSystemSettings.Instance.globalScale;
+                //TODO: Get the global instance prefab
+                leafPrefab = LSystemSettings.Instance.globalLeaf;
             }
         }
 
@@ -208,7 +209,8 @@ public class LSystemRenderer : MonoBehaviour
         {
             GameObject leaf = Instantiate(leafPrefab, currPos + 0.5f * currDir.normalized * branchLength * currScale, Quaternion.Euler(currDir.x, currDir.y, currDir.z));
             leaf.transform.parent = currentTree.transform;
-            leaf.transform.localScale = leaf.transform.localScale * currScale;
+            leaf.transform.localScale = leaf.transform.localScale * currScale * 1f;
+            leaf.transform.up = currDir;
         }
         //COMPLETED
         currentRecursionDepth -= 1;

@@ -3223,7 +3223,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Use Template Settings
+  m_text: Reset Template
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4bf51dfcdffa4e4459a8d037e356e7ae, type: 2}
   m_sharedMaterial: {fileID: -836210124070605254, guid: 4bf51dfcdffa4e4459a8d037e356e7ae, type: 2}

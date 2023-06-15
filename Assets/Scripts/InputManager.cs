@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
 
 
 
-                BuildingSpawner.Instance.Create(hit.point);
+                Spawner.Instance.Create(hit.point);
             }
 
         }

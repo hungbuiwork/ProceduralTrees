@@ -31,19 +31,32 @@ public class LSystemRenderer : MonoBehaviour
     //variables to store static info
     [SerializeField] private LSystem system;
     [SerializeField] private GameObject branchPrefab;
-    [SerializeField] private float branchLength = 1;
+    [SerializeField] private bool createLeaves;
+    [SerializeField] private GameObject leafPrefab;
+    private float branchLength = 1;
+    private float branchThickness = 1;
     [SerializeField] private uint iterations = 5;
-    [SerializeField] private int turnAngle = 30;
-    [SerializeField] private float scaleValue = 1.0f;
+    private int turnAngle = 30;
+    private float scaleValue = 1.0f;
 
     //variables to store current state
-    [SerializeField] private Vector3 currPos = Vector3.zero;
-    [SerializeField] private float currScale = 1;
-    [SerializeField] private Vector3 currDir = Vector3.up;
-    [SerializeField] private Transform currTransform; //the transform used for adding parents/children in the hierarchy
+    private Vector3 currPos = Vector3.zero;
+    private float currScale = 1f;
+    private Vector3 currDir = Vector3.up;
+    private Transform currTransform; //the transform used for adding parents/children in the hierarchy
 
-    [SerializeField] private Vector3 prevDir = Vector3.up;
+    private Vector3 prevDir = Vector3.up;
+    private Transform recentTransform; //recentmost transform, set as the currtransform whenever a save occurs
+    private int currentRecursionDepth;
 
+
+    //To store trees, and animate them
+    [SerializeField] private List<GameObject> generatedTrees = new List<GameObject>();
+    [SerializeField] private GameObject currentTree;
+    [SerializeField] private int currentActiveTree = 0;
+    [SerializeField] private float timeBetweenSwap = 2f;
+    [SerializeField] private float timeSinceLastSwap = 0f;
+    [SerializeField] private bool animating = false;
 
 
 
@@ -70,24 +83,65 @@ public class LSystemRenderer : MonoBehaviour
      ^ = pitch up
      \\ = roll left
      / = roll right
-     | = turn 180 degree [Possibly Not Needed]
      F = draw branch (and go forward)
-     g = go forward [Possibly Not Needed]
      [ = save state
      ] = restore state
-     " = scale state (YET TO IMPLEMENT)
+     S = scale state (YET TO IMPLEMENT)
      */
 
     private void Awake()
     {
         currPos = this.transform.position;
-        Create(system.apply_iterations(iterations));
-        Save();
-    }
+        currTransform = this.transform;
 
+        if (LSystemSettings.Instance != null)
+        {
+
+            system.setTemplate(LSystemSettings.Instance.globalTemplate);
+        }
+
+        branchLength = system.template.getBranchLength();        //User should be able to change this
+        scaleValue = system.template.getScaleValue();            //User will be able to change this
+        turnAngle = system.template.getAngle();                  //User will be able to change this
+        branchThickness = system.template.getBranchThickness(); //User will be able to change this
+
+
+        branchPrefab = system.template.branchPrefab;     
+        createLeaves = system.template.createLeaves;
+        leafPrefab = system.template.leafPrefab;
+
+        if (LSystemSettings.Instance != null)
+        {
+            if (LSystemSettings.Instance.usingOverrides)
+            {
+                turnAngle = (int)LSystemSettings.Instance.globalAngle;
+                scaleValue = LSystemSettings.Instance.globalScale;
+                //TODO: Get the global instance prefab
+                leafPrefab = LSystemSettings.Instance.globalLeaf;
+            }
+        }
+
+
+        system.apply_iterations(iterations);
+        List<string> templateIterations = system.saves;
+        foreach(string s in templateIterations)
+        {
+            Create(s);
+        }
+        Save();
+        foreach(GameObject g in generatedTrees)
+        {
+            g.SetActive(false);
+        }
+        generatedTrees[0].SetActive(true);
+        animating = true;
+    }
     private void Create(string template)
     {
         //TODO: Use helper functions to create the entire thing
+        currentTree = new GameObject() { name = "Iteration " + generatedTrees.Count.ToString()};
+        generatedTrees.Add(currentTree);
+        currentTree.transform.parent = this.transform;
         foreach(char c in template)
         {
             switch (c)
@@ -119,28 +173,47 @@ public class LSystemRenderer : MonoBehaviour
                 case '/':
                     Roll(turnAngle);
                     break;
-                case '?':
-                    Roll(-turnAngle);
-                    break;
-                case '"':
+                case 'S':
                     Scale();
                     break;
 
             }
         }
+        Reset();
     }
 
+    private void Reset()
+    {
+        ///Reset between iteration creation
+        currScale = 1f;
+        currDir = Vector3.up;
+        currTransform = null;
+        recentTransform = null;
+        prevDir= Vector3.up;
+        currPos = this.transform.position;
+        currentRecursionDepth = 0;
 
+    }
 
     private void Save()
     {
         //COMPLETED
+        currentRecursionDepth += 1;
+        currTransform = recentTransform;
         stack.Push(new LSystemState(currPos, currDir, currScale, currTransform, prevDir));
     }
 
     private void Restore()
     {
+        if (currentRecursionDepth > 1 && createLeaves)
+        {
+            GameObject leaf = Instantiate(leafPrefab, currPos + 0.5f * currDir.normalized * branchLength * currScale, Quaternion.Euler(currDir.x, currDir.y, currDir.z));
+            leaf.transform.parent = currentTree.transform;
+            leaf.transform.localScale = leaf.transform.localScale * currScale * 1f;
+            leaf.transform.up = currDir;
+        }
         //COMPLETED
+        currentRecursionDepth -= 1;
         LSystemState restoredState = stack.Pop();
         currPos = restoredState.position;
         currDir = restoredState.direction;
@@ -155,7 +228,19 @@ public class LSystemRenderer : MonoBehaviour
         //TODO: set the transforms accordingly
         //Draws a branch, sets transform's parent to the currTransform, updates currPos accordingly(by offsetting currPos by branchLength * currScale)
         prevDir = new Vector3(currDir.x, currDir.y, currDir.z); //UNKNOWN IF THIS IS NEEDED
-        Vector3 newPos = currPos + (currDir.normalized * currScale);
+        Vector3 newPos = currPos + (currDir.normalized * currScale * branchLength);
+        GameObject branch = Instantiate(branchPrefab, newPos, Quaternion.Euler(currDir.x, currDir.y, currDir.z));
+        //branch.transform.up = currDir;
+        branch.transform.up = currDir;
+        branch.transform.localScale = new Vector3(currScale * branchThickness * branch.transform.localScale.x, currScale * branchLength * branch.transform.localScale.y, currScale * branchThickness * branch.transform.localScale.z);
+        branch.transform.parent = currentTree.transform;
+        
+        /*
+        branch.transform.localScale = new Vector3(1, 1, 1);
+        branch.transform.SetParent(currTransform, true);
+        */
+        recentTransform = branch.transform;
+
         gizmoLines.Add(new Line(currPos, newPos));
         gizmoPoints.Add(newPos);
         currPos = newPos;
@@ -205,5 +290,25 @@ public class LSystemRenderer : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+        timeSinceLastSwap += Time.deltaTime;
+        if (timeSinceLastSwap > timeBetweenSwap)
+        {
+            timeSinceLastSwap = 0f;
+            NextTree();
+        }
+    }
+    private void NextTree()
+    {
+        generatedTrees[currentActiveTree].SetActive(false);
+        currentActiveTree = (currentActiveTree + 1);
+        if (currentActiveTree > generatedTrees.Count - 1)
+        {
+            currentActiveTree = generatedTrees.Count - 1;
+        }
+        generatedTrees[currentActiveTree].SetActive(true);
+
+    }
 
 }

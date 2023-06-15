@@ -14,6 +14,7 @@ public class Particles : MonoBehaviour
     [SerializeField] private float totalForce;
     [SerializeField] private bool explosion;
     [SerializeField] private int numberOfBurstParticles;
+    [SerializeField] private bool firework;
     private bool firstBurst = true;
     
     
@@ -21,23 +22,29 @@ public class Particles : MonoBehaviour
 
     private void Update()
     {
-        if (explosion != true){
-            timeSinceLastSpawned += Time.deltaTime;
-            if (timeSinceLastSpawned > timeBetweenSpawns)
-            {
-                StartCoroutine(SpawnNewParticle());
-                timeSinceLastSpawned = 0f;
-            }
+        if (firework) {
+            StartCoroutine(Firework());
         }
         else {
-            if (firstBurst == true) {
-                EmitParticleBurst(numberOfBurstParticles);
-                firstBurst = false;
+            if (explosion != true){
+                timeSinceLastSpawned += Time.deltaTime;
+                if (timeSinceLastSpawned > timeBetweenSpawns)
+                {
+                    StartCoroutine(SpawnNewParticle());
+                    timeSinceLastSpawned = 0f;
+                }
             }
-            
-        }
+            else {
+                if (firstBurst == true) {
+                    EmitParticleBurst(numberOfBurstParticles);
+                    firstBurst = false;
+                }
+                
+            }
 
-        UpdateParticles();
+            UpdateParticles();
+        }
+        
     }
 
     IEnumerator SpawnNewParticle()
@@ -48,9 +55,6 @@ public class Particles : MonoBehaviour
         Rigidbody particleRb = newParticle.GetComponent<Rigidbody>();
         particleBodies.Add(particleRb);
         newParticle.transform.parent = this.transform;
-        //Edit this to apply forces, etc to each particle
-        //particleRb.AddForce((particleRb.position - this.transform.position).normalized * 200f);
-        //particleRb.AddForce(Vector3.up * 500f);
         yield return new WaitForSeconds(Random.Range(minParticleLifeTime,maxParticleLifeTime));
         EraseParticle(particleRb);
         
@@ -74,6 +78,7 @@ public class Particles : MonoBehaviour
                 Vector3 acceleration = Vector3.up * (totalForce / rb.mass);
                 rb.velocity = rb.velocity + 0.004f * acceleration;
                 rb.position = rb.position + 0.004f * rb.velocity;
+                //Old Version:
                 //rb.AddForce(Vector3.up * totalForce);
             }
         }
@@ -85,5 +90,14 @@ public class Particles : MonoBehaviour
             StartCoroutine(SpawnNewParticle());
             counter--;
         }
+    }
+
+    IEnumerator Firework() {
+        yield return new WaitForSeconds(2);
+        if (firstBurst == true) {
+            EmitParticleBurst(numberOfBurstParticles);
+            firstBurst = false;
+        }
+        UpdateParticles();
     }
 }

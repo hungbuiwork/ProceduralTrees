@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class Particles : MonoBehaviour
@@ -15,15 +16,25 @@ public class Particles : MonoBehaviour
     [SerializeField] private bool explosion;
     [SerializeField] private int numberOfBurstParticles;
     [SerializeField] private bool firework;
+
+    [SerializeField] private bool destructsAfterLifeTime = false;
+    [SerializeField] private float lifeTime = 5.0f;
     private bool firstBurst = true;
-    
-    
+
+
+    private void Awake()
+    {
+    }
 
 
     private void Update()
     {
         if (firework) {
             StartCoroutine(Firework());
+        }
+        if (destructsAfterLifeTime)
+        {
+            Invoke("DestroySelf", lifeTime);
         }
         else {
             if (explosion != true){
@@ -92,6 +103,10 @@ public class Particles : MonoBehaviour
         }
     }
 
+    private void DestroySelf()
+    {
+        InputManager.Instance.removeGameObject(this.transform.root.gameObject);
+    }
     IEnumerator Firework() {
         yield return new WaitForSeconds(2);
         if (firstBurst == true) {

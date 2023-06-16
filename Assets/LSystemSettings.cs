@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public enum LeafType
 {
+    None,
     Sunflower,
     Purpleflower,
     Grass,

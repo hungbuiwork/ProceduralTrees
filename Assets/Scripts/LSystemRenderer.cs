@@ -135,6 +135,7 @@ public class LSystemRenderer : MonoBehaviour
         }
         generatedTrees[0].SetActive(true);
         animating = true;
+        InputManager.Instance.addGameObject(this.gameObject);
     }
     private void Create(string template)
     {

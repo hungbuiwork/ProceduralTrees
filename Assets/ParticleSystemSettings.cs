@@ -70,6 +70,8 @@ public class ParticleSystemSettings : MonoBehaviour
 
     public void Create(Vector3 pos)
     {
-        Instantiate(systems[currentSystemInd],pos, Quaternion.identity);
+        GameObject current = Instantiate(systems[currentSystemInd],pos, Quaternion.identity);
+        InputManager.Instance.addGameObject(current);
+
     }
 }

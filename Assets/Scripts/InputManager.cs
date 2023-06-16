@@ -1,10 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance = null;
     [SerializeField] public Transform indicatorSphere;
+    [SerializeField] private List<GameObject> spawned = new List<GameObject>();
+    [SerializeField] private Color mainBGColor, newBgColor;
+    [SerializeField] private bool dayTime = true;
+
+    public void toggleDaytime()
+    {
+        if(dayTime)
+        {
+            dayTime = false;
+            Camera.main.backgroundColor = newBgColor;
+        }
+        else
+        {
+            dayTime = true;
+            Camera.main.backgroundColor = mainBGColor;
+        }
+    }
+    public void addGameObject(GameObject obj)
+    {
+        spawned.Add(obj);
+    }
+
+    public void removeGameObject(GameObject obj)
+    {
+        spawned.Remove(obj);
+        Destroy(obj);
+    }
+
+    public void undo()
+    {
+        GameObject current = spawned[spawned.Count - 1];
+        spawned.RemoveAt(spawned.Count - 1);
+        Destroy(current);
+
+    }
+
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        mainBGColor = Camera.main.backgroundColor;
+    }
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))

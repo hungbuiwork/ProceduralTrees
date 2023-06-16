@@ -51,13 +51,15 @@ MonoBehaviour:
   particleBodies: []
   timeBetweenSpawns: 0.25
   timeSinceLastSpawned: 0
-  minParticleLifeTime: 0.3
-  maxParticleLifeTime: 0.3
+  minParticleLifeTime: 0.4
+  maxParticleLifeTime: 0.8
   radiusFromCenter: 0.1
   totalForce: 75
   explosion: 1
-  numberOfBurstParticles: 10
+  numberOfBurstParticles: 50
   firework: 1
+  destructsAfterLifeTime: 1
+  lifeTime: 5
 --- !u!54 &4671239791100450644
 Rigidbody:
   m_ObjectHideFlags: 0

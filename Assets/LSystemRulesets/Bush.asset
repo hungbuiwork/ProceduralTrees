@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40a77c8aac6b0f946ab6cd22c0d07414, type: 3}
+  m_Name: Bush
+  m_EditorClassIdentifier: 
+  start: X
+  rules:
+  - Old: 88
+    New: SF-[[&X]+^X]+F[+F^X]-X
+  branchLength: 0.6
+  angle: 30
+  scaleValue: 0.9
+  branchThickness: 1
+  branchPrefab: {fileID: 2057393337354159550, guid: ad48a0720ab237448b7e87454ba445e7, type: 3}
+  createLeaves: 1
+  leaf: 4
+  leafPrefab: {fileID: 0}

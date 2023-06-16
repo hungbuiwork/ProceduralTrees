@@ -10,7 +10,8 @@ public class ParticleSpawner : MonoBehaviour
 
     public void Create(Vector3 pos)
     {
-        Instantiate(options[currentIndex],pos, Quaternion.identity);
+        GameObject newParticle = Instantiate(options[currentIndex],pos, Quaternion.identity);
+        InputManager.Instance.addGameObject(newParticle);
     }
 
     private void Update()

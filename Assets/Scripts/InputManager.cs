@@ -23,7 +23,22 @@ public class InputManager : MonoBehaviour
             }
 
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("DOING");
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 200f, 1 << 6))
+            {
+                Debug.Log("You selected the " + hit.transform.name); // ensure you picked right object
+                indicatorSphere.position = hit.point;
 
+
+
+                ParticleSystemSettings.Instance.Create(hit.point);
+            }
+
+        }
 
     }
 }

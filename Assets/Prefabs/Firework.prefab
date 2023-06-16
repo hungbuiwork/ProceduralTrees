@@ -51,10 +51,10 @@ MonoBehaviour:
   particleBodies: []
   timeBetweenSpawns: 0.25
   timeSinceLastSpawned: 0
-  minParticleLifeTime: 1.25
-  maxParticleLifeTime: 1.25
+  minParticleLifeTime: 0.3
+  maxParticleLifeTime: 0.3
   radiusFromCenter: 0.1
-  totalForce: 350
+  totalForce: 75
   explosion: 1
   numberOfBurstParticles: 10
   firework: 1
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 4354631271485556642}
   - component: {fileID: 4354631271485556641}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 4354631271485556647}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4354631270629648603}

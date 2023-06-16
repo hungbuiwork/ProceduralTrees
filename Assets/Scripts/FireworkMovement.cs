@@ -11,7 +11,7 @@ public class FireworkMovement : MonoBehaviour
     {
         Rigidbody emitterRb = this.gameObject.GetComponent<Rigidbody>();
         if (count < 3) {
-            emitterRb.AddForce(Vector3.up * 300f);
+            emitterRb.AddForce(Vector3.up * 50f);
             
         }
         count++;

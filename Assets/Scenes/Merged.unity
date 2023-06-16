@@ -7166,6 +7166,7 @@ MonoBehaviour:
   systems:
   - {fileID: 2180553372231976739, guid: 49f746eeec9409b4b8bb02b9a9760534, type: 3}
   - {fileID: 4354631270629648601, guid: 38e1da4e48226d649addbae27bb866b4, type: 3}
+  - {fileID: 7024748416107896271, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
   currentSystemInd: 0
   usingOverrides: 0
   systemText: {fileID: 455268268}
@@ -7184,6 +7185,7 @@ MonoBehaviour:
   options:
   - {fileID: 2180553372231976739, guid: 49f746eeec9409b4b8bb02b9a9760534, type: 3}
   - {fileID: 4354631270629648601, guid: 38e1da4e48226d649addbae27bb866b4, type: 3}
+  - {fileID: 7024748416107896271, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
   currentIndex: 0
 --- !u!1 &2128664393
 GameObject:

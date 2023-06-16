@@ -7,6 +7,7 @@ public class Particles : MonoBehaviour
 {
     [SerializeField] private GameObject particlePrefab;
     [SerializeField] private List<Rigidbody> particleBodies;
+    [SerializeField] private List<GameObject> particles;
     [SerializeField] private float timeBetweenSpawns;
     [SerializeField] private float timeSinceLastSpawned = 0;
     [SerializeField] private float minParticleLifeTime;
@@ -19,6 +20,8 @@ public class Particles : MonoBehaviour
 
     [SerializeField] private bool destructsAfterLifeTime = false;
     [SerializeField] private float lifeTime = 5.0f;
+    [SerializeField] private bool scaleParticles;
+    [SerializeField] private float uniformScaleAmount;
     private bool firstBurst = true;
 
 
@@ -63,17 +66,19 @@ public class Particles : MonoBehaviour
         Debug.Log("Spawning particle");
         Vector3 newVector = Random.insideUnitCircle * Random.Range(0,radiusFromCenter);
         GameObject newParticle = Instantiate(particlePrefab, this.transform.position + newVector, Quaternion.identity);
+        particles.Add(newParticle);
         Rigidbody particleRb = newParticle.GetComponent<Rigidbody>();
         particleBodies.Add(particleRb);
         newParticle.transform.parent = this.transform;
         yield return new WaitForSeconds(Random.Range(minParticleLifeTime,maxParticleLifeTime));
-        EraseParticle(particleRb);
+        EraseParticle(newParticle,particleRb);
         
     }
 
-    private void EraseParticle(Rigidbody particle)
+    private void EraseParticle(GameObject newParticle,Rigidbody particle)
     {
         particleBodies.Remove(particle);
+        particles.Remove(newParticle);
         Destroy(particle.gameObject);
     }
 
@@ -91,6 +96,14 @@ public class Particles : MonoBehaviour
                 rb.position = rb.position + 0.004f * rb.velocity;
                 //Old Version:
                 //rb.AddForce(Vector3.up * totalForce);
+            }
+        }
+        foreach(GameObject particle in particles){
+            Vector3 scaling = new Vector3(uniformScaleAmount * Time.deltaTime,uniformScaleAmount * Time.deltaTime,uniformScaleAmount * Time.deltaTime);
+            if (scaleParticles == true) {
+                if ((particle.transform.localScale + scaling) != Vector3.zero) {
+                    particle.transform.localScale += scaling;
+                }
             }
         }
     }

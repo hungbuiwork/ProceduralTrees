@@ -295,8 +295,16 @@ PrefabInstance:
       value: 0.027
       objectReference: {fileID: 0}
     - target: {fileID: 3453900253776324025, guid: 9f2e21d3e515dc94888a83d274f591ed, type: 3}
+      propertyPath: scaleParticles
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453900253776324025, guid: 9f2e21d3e515dc94888a83d274f591ed, type: 3}
       propertyPath: radiusFromCenter
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453900253776324025, guid: 9f2e21d3e515dc94888a83d274f591ed, type: 3}
+      propertyPath: uniformScaleAmount
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 3453900253776324025, guid: 9f2e21d3e515dc94888a83d274f591ed, type: 3}
       propertyPath: maxParticleLifeTime
@@ -373,8 +381,16 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7324800426183316151, guid: f947f93d314bb7d4aa5716a31e002a49, type: 3}
+      propertyPath: scaleParticles
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7324800426183316151, guid: f947f93d314bb7d4aa5716a31e002a49, type: 3}
       propertyPath: radiusFromCenter
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7324800426183316151, guid: f947f93d314bb7d4aa5716a31e002a49, type: 3}
+      propertyPath: uniformScaleAmount
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 7324800426183316151, guid: f947f93d314bb7d4aa5716a31e002a49, type: 3}
       propertyPath: maxParticleLifeTime

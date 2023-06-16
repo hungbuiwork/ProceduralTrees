@@ -584,6 +584,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicatorSphere: {fileID: 1211073693}
+  spawned: []
+  mainBGColor: {r: 0, g: 0, b: 0, a: 0}
+  newBgColor: {r: 0, g: 0, b: 0, a: 0}
+  dayTime: 1
 --- !u!4 &2116644643
 Transform:
   m_ObjectHideFlags: 0
@@ -787,6 +791,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38e1da4e48226d649addbae27bb866b4, type: 3}
+--- !u!1001 &6091574402818970331
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -26.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668537760462777558, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7024748416107896271, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
+      propertyPath: m_Name
+      value: Raincloud
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 42a137d3304eb8a4dbd603f3a3da9e4c, type: 3}
 --- !u!1001 &8271119865084567683
 PrefabInstance:
   m_ObjectHideFlags: 0

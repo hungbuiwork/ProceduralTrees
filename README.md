@@ -1,2 +1,2 @@
-# CS114Project
- Procedurally generated buildings and particle systems
+# Procedural Trees
+ Procedurally generated trees and particle systems
